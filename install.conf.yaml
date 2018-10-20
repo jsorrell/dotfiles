@@ -1,0 +1,16 @@
+- defaults:
+    link:
+      create: true
+
+- clean: ['~']
+
+- link:
+    ~/.tmux.conf: .tmux.conf
+    ~/.gitconfig: .gitconfig
+    ~/.config/sway/config: .config/sway/config
+    ~/.config/swaylock/config: .config/swaylock/config
+    ~/.config/gtk-3.0/settings.ini: .config/gtk-3.0/settings.ini
+    ~/.config/termite/config: .config/termite/config
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
