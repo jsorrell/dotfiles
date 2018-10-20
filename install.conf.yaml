@@ -11,6 +11,7 @@
     ~/.config/swaylock/config: .config/swaylock/config
     ~/.config/gtk-3.0/settings.ini: .config/gtk-3.0/settings.ini
     ~/.config/termite/config: .config/termite/config
+    ~/.config/fish/config.fish: .config/fish/config.fish
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
