@@ -233,10 +233,13 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Media Keys
-set $pactl_device 2
-bindsym --locked XF86AudioMute exec sh -c "pactl set-sink-mute $pactl_device toggle"
-bindsym --locked XF86AudioLowerVolume exec sh -c "pactl set-sink-mute $pactl_device false; pactl set-sink-volume $pactl_device -5%"
-bindsym --locked XF86AudioRaiseVolume exec sh -c "pactl set-sink-mute $pactl_device false; pactl set-sink-volume $pactl_device +5%"
+bindsym --locked XF86AudioMute exec ~/.local/bin/mkcon togglemute
+bindsym --locked XF86AudioLowerVolume exec ~/.local/bin/mkcon voldown
+bindsym --locked XF86AudioRaiseVolume exec ~/.local/bin/mkcon volup
+bindsym --locked XF86AudioPlay exec ~/.local/bin/mkcon togglepause
+bindsym --locked XF86AudioPrev exec ~/.local/bin/mkcon prev
+bindsym --locked XF86AudioNext exec ~/.local/bin/mkcon next
+
 
 #
 # Status Bar:

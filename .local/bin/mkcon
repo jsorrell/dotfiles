@@ -1,0 +1,53 @@
+#!/bin/bash
+
+pactl_device=2
+volume_change=5 # percent
+
+docommand() {
+
+	case $1 in
+		mt|mute)
+			pactl set-sink-mute $pactl_device true
+			;;
+		um|unmute)
+			pactl set-sink-mute $pactl_device false
+			;;
+		m|togglemute)
+			pactl set-sink-mute $pactl_device toggle
+			;;
+		vu|volu|volup|volumeup)
+			docommand unmute
+			pactl set-sink-volume $pactl_device "+${volume_change}%"
+			;;
+		vd|vold|voldown|volumedown)
+			docommand unmute
+			pactl set-sink-volume $pactl_device "-${volume_change}%"
+			;;
+		pl|play)
+			playerctl play
+			;;
+		ps|pause)
+			playerctl pause
+			;;
+		p|togglepause)
+			playerctl play-pause
+			;;
+		n|next)
+			playerctl next
+			;;
+		pr|prev|previous)
+			playerctl previous
+			;;
+		*)
+			>&2 echo "Unknown option \"$1\""
+			exit 1
+			;;
+	esac
+}
+
+if [ $# -lt 1 ]; then
+	>&2 echo "Option required"
+	exit 1
+fi
+
+docommand $1

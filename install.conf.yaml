@@ -12,6 +12,7 @@
     ~/.config/gtk-3.0/settings.ini: .config/gtk-3.0/settings.ini
     ~/.config/termite/config: .config/termite/config
     ~/.config/fish/config.fish: .config/fish/config.fish
+    ~/.local/bin/mkcon: .local/bin/mkcon
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
