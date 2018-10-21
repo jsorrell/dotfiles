@@ -74,10 +74,10 @@ exec spotify
 # resumed. It will also lock your screen before your computer goes to sleep.
 
 exec swayidle \
-	timeout 150 'swaylock -c 000000' \
+	timeout 150 'swaylock' \
 	timeout 120 'swaymsg "output * dpms off"' \
 	     resume 'swaymsg "output * dpms on"' \
-	before-sleep 'swaylock -c 000000'
+	before-sleep 'swaylock'
 
 ### Input configuration
 #
