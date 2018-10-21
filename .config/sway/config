@@ -18,7 +18,6 @@ set $term termite
 # Your preferred application launcher
 # Note: it's recommended that you pass the final command to sway
 #set $menu dmenu_path | dmenu | xargs swaymsg exec
-#set $menu dmenu_path | rofi -dmenu -i -font "Helvetica Neue 15" | xargs swaymsg exec
 set $menu i3-dmenu-desktop --dmenu="rofi -dmenu -i -font 'Helvetica Neue 15'" | xargs swaymsg exec
 
 ### Output configuration
@@ -45,11 +44,20 @@ gaps outer 0
 smart_gaps on
 
 # Assign Windows
-assign [class="Firefox"] 1
-assign [class="Atom"] 2
+assign [class="Firefox"] → 1
+assign [class="Atom"] → 2
 
-# Spotify done differently
-for_window [class="Spotify"] move to workspace $ws10
+# Floating
+for_window [window_type=dialog] floating enable
+
+# Scratchpad
+# do not try to resize on the scratchpad; this crashes sway.
+for_window [class="keepassxc" title="^(?!Auto-Type).+ - KeePassXC$"] floating enable, resize set 1800 px 1000 px, move scratchpad
+for_window [class="Spotify"] move scratchpad
+
+# Startup
+exec keepassxc
+exec spotify
 
 ### Idle configuration
 #
@@ -176,7 +184,7 @@ input 9456:320:Metadot_-_Das_Keyboard_Das_Keyboard {
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
-    bindsym $mod+b splith
+    bindsym $mod+h splith
     bindsym $mod+v splitv
 
     # Switch the current container between different layout styles
