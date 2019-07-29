@@ -57,7 +57,7 @@ for_window [class="Firefox" window_role="Organizer"] floating_minimum_size 272 x
 
 # Scratchpad
 # do not try to resize on the scratchpad; this crashes sway.
-for_window [class="keepassxc" title="^(?:(?!Auto-Type).+ - )?KeePassXC$"] floating enable, resize set 1800 px 1000 px, move scratchpad
+for_window [title="^(?:(?!Auto-Type).+ - )?KeePassXC$"] floating enable, resize set 1800 px 1000 px, move scratchpad
 for_window [class="Spotify"] floating enable, resize set 1800 px 1000 px, move scratchpad
 
 # Startup
@@ -85,6 +85,7 @@ exec swayidle \
 	     resume 'swaymsg "output * dpms on"' \
 	before-sleep 'swaylock'
 	
+# Mod1 = Alt
 bindsym Control+Mod1+l exec swaylock
 
 ### Input configuration
