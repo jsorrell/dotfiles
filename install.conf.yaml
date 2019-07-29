@@ -13,7 +13,6 @@
     ~/.config/omf/functions/.....fish: .config/omf/functions/.....fish
     ~/.config/omf/functions/......fish: .config/omf/functions/......fish
     ~/.config/omf/functions/ls.fish: .config/omf/functions/ls.fish
-    ~/.config/omf/functions/start-sway.fish: .config/omf/functions/start-sway.fish
     ~/.config/omf/init.fish: .config/omf/init.fish
     ~/.config/omf/theme: .config/omf/theme
     ~/.config/sway/config: .config/sway/config
@@ -24,8 +23,11 @@
     ~/.local/i3blocks-scripts: .local/i3blocks-scripts
     ~/.local/share/applications/atom.desktop: .local/share/applications/atom.desktop
     ~/.local/share/applications/boostnote.desktop: .local/share/applications/boostnote.desktop
-    ~/.local/share/applications/spotify.desktop: .local/share/applications/spotify.desktop
     ~/.tmux.conf: .tmux.conf
+    ~/bin/atom: bin/atom
+    ~/bin/boostnote: bin/boostnote
+    ~/bin/spotify: bin/spotify
+    ~/bin/sway: bin/sway
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]

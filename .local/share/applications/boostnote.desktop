@@ -2,8 +2,8 @@
 Name=Boostnote
 GenericName=Boostnote is an open source note-taking app made for programmers just like you.
 Comment=Boostnote is an open source note-taking app made for programmers just like you.
-TryExec=/usr/bin/boostnote
-Exec=/usr/bin/boostnote --force-device-scale-factor=1.33 %U
+TryExec=boostnote
+Exec=boostnote %U
 Icon=boostnote
 Type=Application
 StartupNotify=true

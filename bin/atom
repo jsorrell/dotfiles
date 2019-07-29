@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/bin/atom --force-device-scale-factor=1.33 "$@"

@@ -1,0 +1,20 @@
+#!/bin/sh
+export XDG_SESSION_TYPE=wayland
+
+# Enable QT Wayland
+# export QT_QPA_PLATFORM=xcb
+export QT_QPA_PLATFORM=wayland
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+
+# Enable GTK+ Wayland
+# export GDK_BACKEND=wayland
+# export CLUTTER_BACKEND=wayland
+
+# Set qt theme (Weird I know)
+# export XDG_CURRENT_DESKTOP=kde
+export QT_QPA_PLATFORMTHEME=qt5ct
+
+# Java Weirdness
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+exec /usr/bin/sway -d 2> /tmp/sway.log
