@@ -13,6 +13,7 @@
     ~/.config/omf/functions/.....fish: .config/omf/functions/.....fish
     ~/.config/omf/functions/......fish: .config/omf/functions/......fish
     ~/.config/omf/functions/ls.fish: .config/omf/functions/ls.fish
+    ~/.config/omf/functions/start-sway.fish: .config/omf/functions/start-sway.fish
     ~/.config/omf/init.fish: .config/omf/init.fish
     ~/.config/omf/theme: .config/omf/theme
     ~/.config/sway/config: .config/sway/config
