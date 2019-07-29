@@ -5,14 +5,19 @@
 - clean: ['~']
 
 - link:
-    ~/.tmux.conf: .tmux.conf
-    ~/.gitconfig: .gitconfig
+    ~/.config/fish/config.fish: .config/fish/config.fish
+    ~/.config/gtk-3.0/settings.ini: .config/gtk-3.0/settings.ini
+    ~/.config/i3blocks/config: .config/i3blocks/config
     ~/.config/sway/config: .config/sway/config
     ~/.config/swaylock/config: .config/swaylock/config
-    ~/.config/gtk-3.0/settings.ini: .config/gtk-3.0/settings.ini
     ~/.config/termite/config: .config/termite/config
-    ~/.config/fish/config.fish: .config/fish/config.fish
+    ~/.gitconfig: .gitconfig
     ~/.local/bin/mkcon: .local/bin/mkcon
+    ~/.local/i3blocks-scripts: .local/i3blocks-scripts
+    ~/.tmux.conf: .tmux.conf
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
+  - [sh -c "cd .local/i3blocks-scripts/bandwidth && gcc -march=native -O3 -Wall -Werror -Wextra -std=c11 -o bandwidth bandwidth.c"]
+  - [sh -c "cd .local/i3blocks-scripts/date && gcc -march=native -O3 -Wall -Werror -Wextra -std=c11 -o date date.c"]
+  - [sh -c "cd .local/i3blocks-scripts/time && gcc -march=native -O3 -Wall -Werror -Wextra -std=c11 -o time time.c"]

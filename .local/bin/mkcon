@@ -1,43 +1,134 @@
 #!/bin/bash
 
-pactl_device=2
 volume_change=5 # percent
+PLAYER_FILE="/tmp/mp_playerfile"
+
+update_volume_bar() {
+	pkill -RTMIN+10 i3blocks
+}
+
+update_media_bar() {
+	pkill -RTMIN+11 i3blocks
+}
+
+is_valid_player() {
+	2>/dev/null playerctl -l | grep -q "^$1\$"
+}
+
+set_player() {
+	is_valid_player "$1"
+	if [ $? -ne 0 ]; then
+		>&2 echo "Invalid player. Valid players are:"
+		>&2 playerctl -l
+		exit 1
+	fi
+	echo "$1" > "$PLAYER_FILE"
+}
+
+get_player() {
+	if [ -e "$PLAYER_FILE" ]; then
+		local player="$(cat $PLAYER_FILE)"
+		is_valid_player "$player"
+		if [ $? -eq 0 ]; then
+			echo "$player"
+			return 0
+		fi
+	fi
+	echo "$(playerctl -l | head -n1)"
+}
+
+get_next_player() {
+	local player="$1"
+	local players
+	readarray -t players < <(playerctl -l)
+	local lplayers=(${players[@]} ${players[0]})
+	for i in ${!players[@]}; do
+		if [ "${players[$i]}" == "$player" ]; then
+			echo "${lplayers[$(($i+1))]}"
+			return
+		fi
+	done
+	# If no match, give first
+	echo "${players[0]}"
+}
+
+get_prev_player() {
+	local player="$1"
+	local players
+	readarray -t players < <(playerctl -l)
+	local lplayers=(${players[-1]} ${players[@]})
+	for i in ${!players[@]}; do
+		if [ "${players[$i]}" == "$player" ]; then
+			echo "${lplayers[$i]}"
+			return
+		fi
+	done
+	# If no match, give first
+	echo "${players[0]}"
+}
 
 docommand() {
-
-	case $1 in
+	local player="$(get_player)"
+	case "$1" in
 		mt|mute)
-			pactl set-sink-mute $pactl_device true
+			amixer -q sset Master mute
+			update_volume_bar
 			;;
 		um|unmute)
-			pactl set-sink-mute $pactl_device false
+			amixer -q sset Master unmute
+			update_volume_bar
 			;;
 		m|togglemute)
-			pactl set-sink-mute $pactl_device toggle
+			amixer -q sset Master toggle
+			update_volume_bar
 			;;
 		vu|volu|volup|volumeup)
 			docommand unmute
-			pactl set-sink-volume $pactl_device "+${volume_change}%"
+			amixer -q sset Master $volume_change%+
+			update_volume_bar
 			;;
 		vd|vold|voldown|volumedown)
 			docommand unmute
-			pactl set-sink-volume $pactl_device "-${volume_change}%"
+			amixer -q sset Master $volume_change%-
+			update_volume_bar
 			;;
 		pl|play)
-			playerctl play
+			playerctl -p "$player" play
+			update_media_bar
 			;;
 		ps|pause)
-			playerctl pause
+			playerctl -p "$player" pause
+			update_media_bar
 			;;
 		p|togglepause)
-			playerctl play-pause
+			playerctl -p "$player" play-pause
+			update_media_bar
 			;;
 		n|next)
-			playerctl next
+			playerctl -p "$player" next
+			update_media_bar
 			;;
 		pr|prev|previous)
-			playerctl previous
+			playerctl -p "$player" previous
+			update_media_bar
 			;;
+		s|set|setplayer)
+			if [ "x$2" == "x" ]; then 
+				>&2 echo "Player required"
+				exit 1
+			fi
+			set_player "$2"
+			;;
+		g|get|getplayer)
+			echo "$player"
+			;;
+		np|nextplayer)
+			set_player $(get_next_player "$player")
+			;;
+		pp|prevplayer|previousplayer)
+			set_player $(get_prev_player "$player")
+			;;
+			
 		*)
 			>&2 echo "Unknown option \"$1\""
 			exit 1
@@ -50,4 +141,4 @@ if [ $# -lt 1 ]; then
 	exit 1
 fi
 
-docommand $1
+docommand "$1" "$2"

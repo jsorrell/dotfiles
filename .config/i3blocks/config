@@ -1,0 +1,133 @@
+# i3blocks config file
+
+# Properties in Sway
+#
+# full_text
+# short_text
+# color
+# min_width
+# align
+# urgent
+# name
+# instance
+# markup
+# separator
+# separator_block_width
+# background
+# border
+# border_top
+# border_bottom
+# border_left
+# border_right
+
+# Global properties
+#
+# The top properties below are applied to every block, but can be overridden.
+# Each block command defaults to the script name to avoid boilerplate.
+# Change $SCRIPT_DIR to the location of your scripts!
+_command=${SCRIPT_DIR}/${BLOCK_NAME}/${BLOCK_NAME}
+_command_format= %s 
+# WARNING don't forget to flush!
+command=eval "${_command}" | awk -F'\n' "{if (\"$interval\" == \"persist\" || NR <= 2) { printf \"${_command_format}\n\", \$1 } else { print \$1 }; fflush(\"/dev/stdout\"); }"
+# Background doesn't cover the separator. Use command format instead and edit label format with spaces.
+separator_block_width=2
+markup=pango
+separator=false
+color=#323232
+
+# Use colors as borders on sides
+border_left=0
+border_right=0
+
+_color1=#A491D3
+_color2=#818AA3
+_color3=#C5DCA0
+_color4=#F5F2B8
+_color5=#F9DAD0
+
+[yay-update]
+LABEL= 
+interval=1800 # 30 Mins
+QUIET=true
+UPDATE_COLOR=#323232
+BASE_COLOR=#323232
+AUR=true
+background=#F5F2B8
+
+
+####################
+# Volume Indicator #
+####################
+[volume-pulseaudio]
+interval=once
+signal=10
+# Special letter spacings to account for variable sized characters
+# Use separations between hair spaces '\U200A'
+AUDIO_HIGH_SYMBOL=<span font='Font Awesome 5 Free Solid'></span><span letter_spacing='0'>  </span> 
+AUDIO_MED_THRESH=65
+AUDIO_MED_SYMBOL=<span font='Font Awesome 5 Free Solid'></span><span letter_spacing='4500'>  </span> 
+AUDIO_LOW_THRESH=10
+AUDIO_LOW_SYMBOL=<span font='Font Awesome 5 Free Solid'></span><span letter_spacing='7500'>  </span> 
+AUDIO_MUTED_SYMBOL=<span font='Font Awesome 5 Free Solid'></span><span letter_spacing='1600'>  </span> 
+AUDIO_DELTA=10
+MUTED_MARKUP=color='#6E6E6E'
+background=#F9DAD0
+# These are needed b/c another bug
+align=left
+min_width=130
+
+[mediaplayer]
+interval=5
+signal=11
+background=#F9DAD0
+ICON_spotify=<span font='Font Awesome 5 Free Brands'></span> 
+ICON_plasma-browser-integration=<span font='Font Awesome 5 Free Brands'></span> 
+ICON_cmus=cmus 
+
+# System Monitor
+[cpu_usage]
+LABEL=<span font='Font Awesome 5 Free Solid'></span> 
+interval=3
+min_width=100
+DECIMALS=0
+background=#A491D3
+[memory]
+LABEL=<span font='Font Awesome 5 Free Solid'></span> 
+interval=30
+background=#A491D3
+[ping]
+instance=8.8.8.8
+LABEL=<span font='Font Awesome 5 Free Solid'></span>
+RATE=3
+AVGTIME=30
+interval=persist
+background=#A491D3
+[bandwidth]
+instance=eno1
+LABEL_TX=<span font='Font Awesome 5 Free Solid'></span> 
+LABEL_RX=<span font='Font Awesome 5 Free Solid'></span> 
+USE_BITS=1
+interval=persist
+background=#A491D3
+[disk]
+LABEL=<span font='Font Awesome 5 Free Solid'></span>
+interval=30
+align=left
+background=#A491D3
+# Remove this?
+
+# Date
+[date]
+LABEL=<span font='Font Awesome 5 Free Regular'></span> 
+interval=persist
+#background=#818AA3
+background=#C5DCA0
+
+# Date Time
+[time]
+LABEL=<span font='Font Awesome 5 Free Regular'></span> 
+interval=persist
+background=#C5DCA0
+
+# Add VPN connection
+# IP address?

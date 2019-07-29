@@ -9,24 +9,34 @@
 # Logo key. Use Mod1 for Alt.
 set $mod Mod4
 # Home row direction keys, like vim
-set $left h
-set $down j
-set $up k
-set $right l
+#set $left h
+#set $down j
+#set $up k
+#set $right l
 # Your preferred terminal emulator
 set $term termite
 # Your preferred application launcher
 # Note: it's recommended that you pass the final command to sway
 #set $menu dmenu_path | dmenu | xargs swaymsg exec
-set $menu i3-dmenu-desktop --dmenu="rofi -dmenu -i -font 'Helvetica Neue 15'" | xargs swaymsg exec
+
+# Doesn't work without sh for some reason -- debug this when better at shell scripts
+set $menu dmenu_desktop --dmenu="rofi -dmenu -i -font 'Helvetica Neue 15'" | xargs -0 -I{} sh -c "swaymsg exec {}"
+
+set $monitor_port DP-1
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in __DATADIR__/backgrounds/sway/)
 #output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
-output * {
+
+# Have monitor plugged into both HDMI and DP, but HDMI doesn't work with 60hz for some reason.
+output HDMI-A-1 disable
+
+output DP-1 {
+	res 3840x2160@60Hz
 	bg /home/jsorrell/wallpaper/wp.jpg fill
 }
+
 #
 # Example configuration:
 #
@@ -49,15 +59,17 @@ assign [class="Atom"] → 2
 
 # Floating
 for_window [window_type=dialog] floating enable
+for_window [class="Firefox" window_role="Organizer"] floating_minimum_size 272 x 83, floating enable, resize set 1000 px 500 px
 
 # Scratchpad
 # do not try to resize on the scratchpad; this crashes sway.
-for_window [class="keepassxc" title="^(?!Auto-Type).+ - KeePassXC$"] floating enable, resize set 1800 px 1000 px, move scratchpad
-for_window [class="Spotify"] move scratchpad
+for_window [class="keepassxc" title="^(?:(?!Auto-Type).+ - )?KeePassXC$"] floating enable, resize set 1800 px 1000 px, move scratchpad
+for_window [class="Spotify"] floating enable, resize set 1800 px 1000 px, move scratchpad
 
 # Startup
 exec keepassxc
 exec spotify
+#exec redshift
 
 ### Idle configuration
 #
@@ -78,6 +90,8 @@ exec swayidle \
 	timeout 120 'swaymsg "output * dpms off"' \
 	     resume 'swaymsg "output * dpms on"' \
 	before-sleep 'swaylock'
+	
+bindsym Control+Mod1+l exec swaylock
 
 ### Input configuration
 #
@@ -131,10 +145,10 @@ input 9456:320:Metadot_-_Das_Keyboard_Das_Keyboard {
 # Moving around:
 #
     # Move your focus around
-    bindsym $mod+$left focus left
-    bindsym $mod+$down focus down
-    bindsym $mod+$up focus up
-    bindsym $mod+$right focus right
+    #bindsym $mod+$left focus left
+    #bindsym $mod+$down focus down
+    #bindsym $mod+$up focus up
+    #bindsym $mod+$right focus right
     # or use $mod+[up|down|left|right]
     bindsym $mod+Left focus left
     bindsym $mod+Down focus down
@@ -142,10 +156,10 @@ input 9456:320:Metadot_-_Das_Keyboard_Das_Keyboard {
     bindsym $mod+Right focus right
 
     # _move_ the focused window with the same, but add Shift
-    bindsym $mod+Shift+$left move left
-    bindsym $mod+Shift+$down move down
-    bindsym $mod+Shift+$up move up
-    bindsym $mod+Shift+$right move right
+    #bindsym $mod+Shift+$left move left
+    #bindsym $mod+Shift+$down move down
+    #bindsym $mod+Shift+$up move up
+    #bindsym $mod+Shift+$right move right
     # ditto, with arrow keys
     bindsym $mod+Shift+Left move left
     bindsym $mod+Shift+Down move down
@@ -223,10 +237,10 @@ mode "resize" {
     # right will grow the containers width
     # up will shrink the containers height
     # down will grow the containers height
-    bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
-    bindsym $right resize grow width 10px
+    #bindsym $left resize shrink width 10px
+    #bindsym $down resize grow height 10px
+    #bindsym $up resize shrink height 10px
+    #bindsym $right resize grow width 10px
 
     # ditto, with arrow keys
     bindsym Left resize shrink width 10px
@@ -256,11 +270,15 @@ bindsym --locked XF86AudioNext exec ~/.local/bin/mkcon next
 bar {
     position top
     colors {
-        statusline #ffffff
+		# Make the text same color as separators and unused background.
+		# This won't show unless a per-block background is set.
+        statusline #323232
+        separator #323232
         background #323232
         inactive_workspace #32323200 #32323200 #5c5c5c
     }
-    font "Helvetica Neue" 18
+	font pango:Liberation Mono, Font Awesome 5 Free 18
+	status_command SCRIPT_DIR="/home/jsorrell/.local/i3blocks-scripts" i3blocks
 }
 
 include /etc/sway/config.d/*

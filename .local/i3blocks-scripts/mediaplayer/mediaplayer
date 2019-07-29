@@ -1,0 +1,78 @@
+#!/usr/bin/env perl
+# Copyright (C) 2014 Tony Crisci <tony@dubstepdish.com>
+# Copyright (C) 2015 Thiago Perrotta <perrotta dot thiago at poli dot ufrj dot br>
+# Copyright (C) 2018 Jack Sorrell
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Requires playerctl binary to be in your path
+# See: https://github.com/acrisci/playerctl
+
+use strict;
+use warnings;
+use diagnostics;
+
+use Time::HiRes qw(usleep);
+use Switch;
+
+use constant DELAY => 100; # Delay in ms to let network-based players reflect new data.
+use constant MAX_STATUS_WIDTH => 100; # Characters
+use constant PLAYER_FILE => "/tmp/mp_playerfile";
+use constant MKCON => "~/.local/bin/mkcon";
+
+my $pause_icon = defined $ENV{PAUSE_ICON} ? $ENV{PAUSE_ICON} : " ";
+my $play_icon = defined $ENV{PLAY_ICON} ? $ENV{PLAY_ICON} : " ";
+
+sub get_icon {
+    return defined $ENV{"ICON_$_[0]"} ? $ENV{"ICON_$_[0]"} : "$_[0] ";
+}
+
+sub strip_newline {
+    return ("$_[0]" =~ s/\n$//rs);
+}
+
+sub delay {
+    usleep(DELAY * 1000);
+}
+
+my $player = strip_newline(`${\ MKCON } getplayer`);
+if (!$player) {
+    exit 0;
+}
+
+if (defined $ENV{'BLOCK_BUTTON'}) {
+    if ($ENV{'BLOCK_BUTTON'} == 1) { # Left Click
+        system("playerctl -p $player play-pause");
+        delay;
+    } elsif ($ENV{'BLOCK_BUTTON'} == 2) { # Middle Click
+    # } elsif ($ENV{'BLOCK_BUTTON'} == 3) { # Right Click
+    } elsif ($ENV{'BLOCK_BUTTON'} <= 4) { # Scroll Up
+        system("${\ MKCON } nextplayer");
+        $player = strip_newline(`${\ MKCON } getplayer`);
+    } elsif ($ENV{'BLOCK_BUTTON'} == 5) { # Scroll Down
+        system("${\ MKCON } previousplayer");
+        $player = strip_newline(`${\ MKCON } getplayer`);
+    }
+}
+
+my $status = strip_newline(`playerctl -p $player status`);
+my $title = strip_newline(`playerctl -p $player metadata title`);
+my $artist = strip_newline(`playerctl -p $player metadata artist`);
+
+if ($artist) {
+    printf("%s%s%s | %s\n", get_icon($player), $status eq "Playing" ? $pause_icon : $play_icon, $title, $artist);
+} else {
+    printf("%s%s%s\n", get_icon($player), $status eq "Playing" ? $pause_icon : $play_icon, $title);
+}
+

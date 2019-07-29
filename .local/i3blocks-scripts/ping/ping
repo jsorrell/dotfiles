@@ -1,0 +1,41 @@
+#!/usr/bin/env perl
+
+use warnings;
+use strict;
+use feature qw(say);
+
+my $addr = defined $ENV{BLOCK_INSTANCE} ? $ENV{BLOCK_INSTANCE} : "8.8.8.8";
+my $rate = defined $ENV{RATE} ? $ENV{RATE} : 3;
+my $averaged_time = defined $ENV{AVGTIME} ? $ENV{AVGTIME} : 30;
+my $label = defined $ENV{LABEL} ? $ENV{LABEL} : "";
+
+my $averaged = int($averaged_time / $rate);
+
+open(my $file, "-|", "ping -n -i $rate $addr") || die("Couldn't open ping.");
+
+# Skip first irrelevant line.
+<$file>;
+
+my @history = ();
+my $average = -1;
+
+while (my $line=<$file>) {
+	if ($line =~ m/time=([\d\.]+) ms/) {
+		my $ping = $1*1.0;
+		my $histsize = scalar @history;
+		if ($histsize == 0) {
+			$average = $ping;
+		} elsif ($histsize == $averaged) {
+			my $oldest = shift(@history);
+			$average = $average - $oldest/$averaged + $ping/$averaged;
+		} else {
+			$average = $average * $histsize / ($histsize + 1) + $ping/($histsize + 1);
+		}
+		push(@history, $1);
+		
+		printf("%s%4.0f\n", $label, $average);
+		STDOUT->flush();
+	} else {
+		say "no_match";
+	}
+}
