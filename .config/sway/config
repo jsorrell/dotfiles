@@ -16,25 +16,19 @@ set $mod Mod4
 # Your preferred terminal emulator
 set $term termite
 # Your preferred application launcher
-# Note: it's recommended that you pass the final command to sway
-#set $menu dmenu_path | dmenu | xargs swaymsg exec
-
-# Doesn't work without sh for some reason -- debug this when better at shell scripts
-set $menu dmenu_desktop --dmenu="rofi -dmenu -i -font 'Helvetica Neue 15'" | xargs -0 -I{} sh -c "swaymsg exec {}"
+# dmenu_desktop available at https://gist.github.com/jsorrell/8d1ef01945de57619ae435d1d80a458f
+set $menu dmenu_desktop --dmenu="rofi -dmenu -i -font 'Helvetica Neue 15'" | xargs -0 -I{} swaymsg exec '{}'
 
 set $monitor_port DP-1
 
 ### Output configuration
-#
-# Default wallpaper (more resolutions are available in __DATADIR__/backgrounds/sway/)
-#output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 
 # Have monitor plugged into both HDMI and DP, but HDMI doesn't work with 60hz for some reason.
 output HDMI-A-1 disable
 
 output DP-1 {
 	res 3840x2160@60Hz
-	bg /home/jsorrell/wallpaper/wp.jpg fill
+	bg /home/jsorrell/.wp fill
 }
 
 #
