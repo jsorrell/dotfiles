@@ -5,11 +5,15 @@
 - clean: ['~']
 
 - link:
-    ~/.config/fish/config.fish: .config/fish/config.fish
     ~/.config/gtk-3.0/settings.ini: .config/gtk-3.0/settings.ini
     ~/.config/i3blocks/config: .config/i3blocks/config
     ~/.config/omf/bundle: .config/omf/bundle
     ~/.config/omf/channel: .config/omf/channel
+    ~/.config/omf/functions/....fish: .config/omf/functions/....fish
+    ~/.config/omf/functions/.....fish: .config/omf/functions/.....fish
+    ~/.config/omf/functions/......fish: .config/omf/functions/......fish
+    ~/.config/omf/functions/ls.fish: .config/omf/functions/ls.fish
+    ~/.config/omf/init.fish: .config/omf/init.fish
     ~/.config/omf/theme: .config/omf/theme
     ~/.config/sway/config: .config/sway/config
     ~/.config/swaylock/config: .config/swaylock/config
