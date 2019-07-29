@@ -22,6 +22,9 @@
     ~/.gitconfig: .gitconfig
     ~/.local/bin/mkcon: .local/bin/mkcon
     ~/.local/i3blocks-scripts: .local/i3blocks-scripts
+    ~/.local/share/applications/atom.desktop: .local/share/applications/atom.desktop
+    ~/.local/share/applications/boostnote.desktop: .local/share/applications/boostnote.desktop
+    ~/.local/share/applications/spotify.desktop: .local/share/applications/spotify.desktop
     ~/.tmux.conf: .tmux.conf
 
 - shell:
