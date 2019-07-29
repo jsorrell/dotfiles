@@ -1,4 +1,5 @@
 ignore-empty-password
 daemonize
+indicator-caps-lock
 color=FFFFFF
-image=/home/jsorrell/wallpaper/wp.jpg
+image=/home/jsorrell/.wp
