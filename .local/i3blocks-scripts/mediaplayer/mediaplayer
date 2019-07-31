@@ -25,6 +25,7 @@ use diagnostics;
 
 use Time::HiRes qw(usleep);
 use Switch;
+use HTML::Escape;
 
 use constant DELAY => 100; # Delay in ms to let network-based players reflect new data.
 use constant MAX_STATUS_WIDTH => 100; # Characters
@@ -70,9 +71,10 @@ my $status = strip_newline(`playerctl -p $player status`);
 my $title = strip_newline(`playerctl -p $player metadata title`);
 my $artist = strip_newline(`playerctl -p $player metadata artist`);
 
+my $line = sprintf("%s%s%s", get_icon($player), $status eq "Playing" ? $pause_icon : $play_icon, escape_html($title));
+
 if ($artist) {
-    printf("%s%s%s | %s\n", get_icon($player), $status eq "Playing" ? $pause_icon : $play_icon, $title, $artist);
-} else {
-    printf("%s%s%s\n", get_icon($player), $status eq "Playing" ? $pause_icon : $play_icon, $title);
+    $line = sprintf("%s | %s", $line, escape_html($artist));
 }
 
+print "$line";
