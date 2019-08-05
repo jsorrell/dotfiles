@@ -1,7 +1,7 @@
 [user]
 	name = Jack Sorrell
 	email = jack@jacksorrell.com
-	signingkey = 2909CF427CB57DB1
+	signingkey = 66B24B502D28E756
 [commit]
 	gpgsign = true
 [http]
