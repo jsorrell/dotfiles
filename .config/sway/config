@@ -16,8 +16,7 @@ set $mod Mod4
 # Your preferred terminal emulator
 set $term termite
 # Your preferred application launcher
-# dmenu_desktop available at https://gist.github.com/jsorrell/8d1ef01945de57619ae435d1d80a458f
-set $menu dmenu_desktop --dmenu="rofi -dmenu -i -font 'Helvetica Neue 15'" | xargs -0 -I{} swaymsg exec '{}'
+set $menu j4-dmenu-desktop --no-generic --term="$term" --dmenu="rofi -dmenu -i -font 'Helvetica Neue 15'"
 
 set $monitor_port DP-1
 
