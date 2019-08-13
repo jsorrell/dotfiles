@@ -18,6 +18,7 @@ set -gx MANPAGER 'less -X'
 
 #Path
 set -gx PATH $HOME/bin $GOPATH/bin $PATH
+set -gx PATH (ruby -e 'puts Gem.user_dir')/bin $PATH
 
 # Go
 if test -d $HOME/go
